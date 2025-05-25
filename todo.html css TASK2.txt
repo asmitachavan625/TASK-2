@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>To-Do List Box with Logout</title>
+  <style>
+    
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #e06ac0 0%, #eb60fb 100%);
+      padding: 20px;
+    }
+
+    .todo-container {
+      background-color: #db9f9f;
+      width: 100%;
+      max-width: 600px;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      box-sizing: border-box;
+      animation: fadeInBox 0.7s ease forwards;
+      position: relative;
+      
+
+    }
+
+    @keyframes fadeInBox {
+      from {
+        opacity: 0;
+        transform: translateY(20px); 
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    #logoutBtn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: #f44336;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      cursor: pointer;
+      border-radius: 6px;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+      z-index: 10;
+    }
+    #logoutBtn:hover {
+      background-color: #d32f2f;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #333;
+      text-align: center;
+    }
+
+    #inputContainer {
+      display: flex;
+      margin-bottom: 20px;
+      gap: 10px;
+    }
+
+    #taskInput {
+      flex-grow: 1;
+      padding: 12px;
+      font-size: 1.2rem;
+      border: 2px solid #ccc;
+      border-radius: 4px 0 0 4px;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+    #taskInput:focus {
+      border-color: #4caf50;
+    }
+
+    #reminderInput {
+      width: 80px;
+      padding: 12px;
+      font-size: 1rem;
+      border: 2px solid #ccc;
+      border-radius: 4px;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+    #reminderInput:focus {
+      border-color: #4caf50;
+    }
+
+    #addBtn {
+      padding: 12px 20px;
+      font-size: 1.2rem;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 0 4px 4px 0;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    #addBtn:hover {
+      background-color: #45a049;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    li {
+      background: white;
+      margin-bottom: 12px;
+      padding: 12px 15px;
+      border-radius: 6px;
+      box-shadow: 0 2px 5px rgb(0 0 0 / 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      opacity: 0;
+      transform: translateX(-30px);
+      animation: slideIn 0.5s forwards;
+      position: relative;
+      transition: background-color 0.4s ease;
+    }
+    @keyframes slideIn {
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    li.completed .task-text {
+      text-decoration: none;
+      color: #999;
+    }
+
+    .task-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-grow: 1;
+      cursor: pointer;
+    }
+
+    .checkbox {
+      width: 22px;
+      height: 22px;
+      border: 2px solid #4caf50;
+      border-radius: 5px;
+      position: relative;
+      flex-shrink: 0;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+      background-color: white;
+    }
+    .checkbox.checked {
+      background-color: #4caf50;
+      border-color: #4caf50;
+    }
+    .checkbox.checked::after {
+      content: "";
+      position: absolute;
+      left: 6px;
+      top: 2px;
+      width: 6px;
+      height: 12px;
+      border: solid white;
+      border-width: 0 3px 3px 0;
+      transform: rotate(45deg);
+      animation: tickFadeIn 0.3s ease forwards;
+    }
+
+    @keyframes tickFadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+
+    .task-text {
+      font-size: 1.1rem;
+      user-select: none;
+    }
+
+    .reminder {
+      font-size: 0.9rem;
+      color: #666;
+      margin-left: 15px;
+      min-width: 65px;
+      text-align: right;
+      font-family: monospace;
+      user-select: none;
+    }
+
+    .reminder.time-up {
+      color: #f44336;
+      font-weight: bold;
+    }
+
+    .cancel-btn {
+      background-color: #f44336;
+      border: none;
+      color: white;
+      padding: 6px 10px;
+      cursor: pointer;
+      border-radius: 4px;
+      margin-left: 15px;
+      flex-shrink: 0;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+    .cancel-btn:hover {
+      background-color: #d32f2f;
+    }
+    
+   
+
+    #completion {
+      margin-top: 15px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      color: #333;
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+
+
+  <div class="todo-container">
+    <button id="logoutBtn">Logout</button>
+    <h1 class="site-title">TODOHUB</h1> <!-- Website name added -->
+  <h1>My To-Do List</h1>
+
+ 
+
+
+
+    <div id="inputContainer">
+      <input type="text" id="taskInput" placeholder="Write a new task..." />
+      <input type="number" id="reminderInput" placeholder="Minutes" min="0" />
+      <button id="addBtn">+</button>
+    </div>
+
+    <ul id="taskList"></ul>
+
+    <div id="completion">Completion: 0%</div>
+  </div>
+
+  <script src="todo.js"></script>
+</body>
+</html>

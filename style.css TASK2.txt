@@ -1,0 +1,179 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+
+body {
+  background: #ffcdcd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  background: #d8adad;
+  width: 400px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  overflow: hidden;
+  position: relative;
+}
+
+.form-wrapper {
+  display: flex;
+  width: 200%;
+  transition: transform 0.5s ease-in-out;
+}
+
+.form-container {
+  width: 50%;
+  padding: 40px;
+}
+
+
+
+
+input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #171717;
+  border-radius: 6px;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border: none;
+  background: linear-gradient(to right, #e455b0, #9e51b1);
+  color: rgb(179, 218, 231);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background: #8faf3d;
+}
+
+.switch {
+  text-align: center;
+  margin-top: 15px;
+  color: #555;
+}
+
+.switch a {
+  color: #d6256c;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.container.sign-up-mode .form-wrapper {
+  transform: translateX(-50%);
+}
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to right, #c471f5, #fa71cd);
+  height: 100vh;
+  
+}
+
+.social-icons {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.social-icons img {
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.social-icons img:hover {
+  transform: scale(1.1);
+}
+
+
+
+.main-container {
+  width: 100%;
+  padding: 20px;
+}
+/* Header Styling */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 2rem 5%;
+  background: linear-gradient(90deg, #d02da5, #2c367c); /* Gradient */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Logo (optional) */
+.header .logo {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Nav Links */
+.header .nav-links {
+  list-style: none;
+  display: flex;
+  gap: 2rem; /* Space between links */
+}
+
+.header .nav-links li a {
+  color: white; /* Make text white */
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.header .nav-links li a:hover {
+  color: #ffd700; /* Gold on hover */
+}
+
+.completed-info {
+  margin-top: 15px;
+  color: #333;
+}
+
+
+/* Make container relative so absolute positioning works */
+.container {
+  position: relative;
+}
+
+/* Make sure logo is placed in top-left */
+.logo-bar {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+}
+
+.logo-icon {
+  width: 70px; /* Adjust size as needed */
+  height: auto;
+}
+
+

@@ -1,0 +1,53 @@
+function toggleMode() {
+  const container = document.getElementById('container');
+  container.classList.toggle('sign-up-mode');
+}
+
+// Hash function using Web Crypto API
+async function hashPassword(password) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(password);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+// Sign Up
+document.querySelector('.sign-up form').addEventListener('submit', async function (e) {
+  e.preventDefault();
+  const username = this.querySelector('input[placeholder="Username"]').value.trim();
+  const email = this.querySelector('input[placeholder="Email"]').value.trim();
+  const password = this.querySelector('input[placeholder="Password"]').value;
+
+  if (!username || !email || !password) {
+    alert("All fields are required.");
+    return;
+  }
+
+  const hashedPassword = await hashPassword(password);
+  const userData = { username, email, password: hashedPassword };
+
+  localStorage.setItem(email, JSON.stringify(userData));
+  alert("Registered successfully! Please log in.");
+  toggleMode();
+  this.reset();
+});
+
+// Sign In
+document.querySelector('.sign-in form').addEventListener('submit', async function (e) {
+  e.preventDefault();
+  const email = this.querySelector('input[placeholder="Email"]').value.trim();
+  const password = this.querySelector('input[placeholder="Password"]').value;
+
+  const storedUser = localStorage.getItem(email);
+  if (!storedUser) return alert("No user found with this email.");
+
+  const userData = JSON.parse(storedUser);
+  const hashedPassword = await hashPassword(password);
+
+  if (userData.password !== hashedPassword) return alert("Incorrect password.");
+
+  localStorage.setItem("loggedInUser", email);
+  window.location.href = "todo.html";
+});
+ 

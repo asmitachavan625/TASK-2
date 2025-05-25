@@ -1,0 +1,142 @@
+const taskInput = document.getElementById('taskInput');
+const reminderInput = document.getElementById('reminderInput');
+const addBtn = document.getElementById('addBtn');
+const taskList = document.getElementById('taskList');
+const completion = document.getElementById('completion');
+const logoutBtn = document.getElementById('logoutBtn');
+
+let timers = new Map();
+
+function formatTime(seconds) {
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return `${m}:${s.toString().padStart(2, '0')}`;
+}
+
+function updateCompletion() {
+  const tasks = taskList.querySelectorAll('li');
+  if (tasks.length === 0) {
+    completion.textContent = 'Completion: 0%';
+    return;
+  }
+  const completedTasks = taskList.querySelectorAll('li.completed').length;
+  const percent = Math.round((completedTasks / tasks.length) * 100);
+  completion.textContent = `Completion: ${percent}%`;
+}
+
+function startTimer(li, duration) {
+  let timeLeft = duration;
+  const reminderSpan = li.querySelector('.reminder');
+  
+
+
+  if (timers.has(li)) {
+    clearInterval(timers.get(li));
+    
+  }
+
+  const interval = setInterval(() => {
+    if (timeLeft <= 0) {
+      clearInterval(interval);
+      reminderSpan.textContent = 'Time\'s up!';
+      reminderSpan.classList.add('time-up');
+      li.style.backgroundColor = '#fff0f0';
+      
+
+    } else {
+      reminderSpan.textContent = formatTime(timeLeft);
+      reminderSpan.classList.remove('time-up');
+      li.style.backgroundColor = 'white';
+      timeLeft--;
+      
+    }
+  }, 1000);
+
+  timers.set(li, interval);
+}
+
+function stopTimer(li) {
+  if (timers.has(li)) {
+    clearInterval(timers.get(li));
+    timers.delete(li);
+  }
+}
+
+function addTask(text, reminderMinutes) {
+  if (!text.trim()) return;
+
+  const li = document.createElement('li');
+
+  const leftDiv = document.createElement('div');
+  leftDiv.className = 'task-left';
+
+  const checkbox = document.createElement('div');
+  checkbox.className = 'checkbox';
+
+  const span = document.createElement('span');
+  span.textContent = text;
+  span.className = 'task-text';
+
+  leftDiv.appendChild(checkbox);
+  leftDiv.appendChild(span);
+
+  const reminderSpan = document.createElement('span');
+  reminderSpan.className = 'reminder';
+  reminderSpan.textContent = reminderMinutes > 0 ? formatTime(reminderMinutes * 60) : '';
+
+  const cancelBtn = document.createElement('button');
+  cancelBtn.textContent = 'X';
+  cancelBtn.className = 'cancel-btn';
+
+  li.appendChild(leftDiv);
+  li.appendChild(reminderSpan);
+  li.appendChild(cancelBtn);
+
+  checkbox.addEventListener('click', () => {
+    checkbox.classList.toggle('checked');
+    li.classList.toggle('completed');
+    updateCompletion();
+  });
+
+  span.addEventListener('click', () => {
+    checkbox.classList.toggle('checked');
+    li.classList.toggle('completed');
+    updateCompletion();
+  });
+
+  cancelBtn.addEventListener('click', () => {
+    stopTimer(li);
+    li.remove();
+    updateCompletion();
+  });
+
+  taskList.appendChild(li);
+
+  if (reminderMinutes > 0) {
+    startTimer(li, reminderMinutes * 60);
+  }
+
+  updateCompletion();
+}
+
+addBtn.addEventListener('click', () => {
+  const taskText = taskInput.value;
+  const reminder = parseInt(reminderInput.value) || 0;
+
+  addTask(taskText, reminder);
+
+  taskInput.value = '';
+  reminderInput.value = '';
+  taskInput.focus();
+});
+
+taskInput.addEventListener('keypress', e => {
+  if (e.key === 'Enter') {
+    addBtn.click();
+  }
+});
+
+logoutBtn.addEventListener('click', () => {
+  // Redirect to login page (change 'login.html' to your actual login page)
+  window.location.href = 'index.html';
+});
